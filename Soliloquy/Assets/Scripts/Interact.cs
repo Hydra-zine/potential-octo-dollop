@@ -1,47 +1,38 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public interface IInteractable
+{
+    void Interact();
+}
+
 public class Interact : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private IInteractable nearbyObject;
 
-    private bool collided = false;
-    private string eventCase;
-
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        collided = true;
-        eventCase = other.tag;
+        nearbyObject = other.GetComponent<IInteractable>();
     }
 
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
-        collided = false;
-        eventCase = null;
-    }
-
-    public void interact(InputAction.CallbackContext context)
-    {
-        var value = context.ReadValue<float>();
-
-        //Debug.Log(eventCase);
-
-        if (collided && value > 0.3)
+        if (other.GetComponent<IInteractable>() == nearbyObject)
         {
-            switch (eventCase)
-            {
-                case "NPC":
-                    Debug.Log("NPC moment");
-                    break;
-                default:
-                    Debug.Log("Unknown Interaction");
-                    break;
-
-            }
+            nearbyObject = null;
         }
+    }
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
 
-
-
+        if (nearbyObject != null)
+        {
+            nearbyObject.Interact();
+        }
+        else
+        {
+            Debug.Log("Nothing to interact with");
+        }
     }
 }
