@@ -1,11 +1,24 @@
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    public static DialogueManager Instance { get;  private set;}
+    public static DialogueManager Instance { get; private set; }
+    public bool dialogueIsActive;
+
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI dialogueText;
+
+    [SerializeField] private GameObject DialogueUI;
+
+    [SerializeField] private float letterSpeed = 0.05f;
+
+
+    private string currentSentance;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -20,11 +33,66 @@ public class DialogueManager : MonoBehaviour
     void Start()
     {
         sentances = new Queue<string>();
+        DialogueUI.SetActive(false);
     }
 
     public void StartDialogue(Dialogue dialogue)
     {
-        Debug.Log("Initiating conversation with: " + dialogue.name);
+
+        InteractionManager.StartInteraction();
+
+        dialogueIsActive = true;
+
+        sentances.Clear();
+
+        DialogueUI.SetActive(true);
+
+        nameText.text = dialogue.name;
+
+        foreach (string sentance in dialogue.sentances)
+        {
+            sentances.Enqueue(sentance);
+        }
+
+        DisplayNextSentance();
+    }
+
+
+    public void DisplayNextSentance()
+    {
+        if (sentances.Count == 0)
+        {
+            EndDialogue();
+            return;
+        }
+
+        StopAllCoroutines();
+
+        if (dialogueText.text != currentSentance)
+        {
+            dialogueText.text = currentSentance;
+            return;
+        }
+
+        currentSentance = sentances.Dequeue();
+        StartCoroutine(TypeSentance(currentSentance));
+    }
+
+    IEnumerator TypeSentance(string sentance)
+    {
+        dialogueText.text = "";
+        foreach (char letter in sentance.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSeconds(letterSpeed);
+        }
+    }
+
+    public void EndDialogue()
+    {
+        InteractionManager.EndInteraction();
+        DialogueUI.SetActive(false);
+        dialogueIsActive = false;
     }
 
 }

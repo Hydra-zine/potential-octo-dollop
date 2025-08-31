@@ -9,6 +9,17 @@ public interface IInteractable
 public class Interact : MonoBehaviour
 {
     private IInteractable nearbyObject;
+    [SerializeField] private PlayerMovement pm;
+
+    private void OnEnable()
+    {
+        InteractionManager.OnInteractionEnd += HandleInteractionEnd;
+    }
+
+    private void OnDisable()
+    {
+        InteractionManager.OnInteractionEnd -= HandleInteractionEnd;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -28,11 +39,18 @@ public class Interact : MonoBehaviour
 
         if (nearbyObject != null)
         {
+            pm.canMove = false;
             nearbyObject.Interact();
         }
         else
         {
             Debug.Log("Nothing to interact with");
         }
+    }
+
+
+    private void HandleInteractionEnd()
+    {
+        pm.canMove = true;
     }
 }

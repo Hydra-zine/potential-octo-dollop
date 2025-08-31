@@ -11,6 +11,7 @@ public class NPC : MonoBehaviour, IInteractable
 
     public void TriggerDialogue()
     {
-        DialogueManager.Instance.StartDialogue(dialogue);
+        if (!DialogueManager.Instance.dialogueIsActive) DialogueManager.Instance.StartDialogue(dialogue);
+        else DialogueManager.Instance.DisplayNextSentance();
     }
 }
