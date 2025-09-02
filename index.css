@@ -60,13 +60,13 @@ h1{
 
 .content p{
     background-color: whitesmoke;
-    margin: 20px;
+    margin: 5px 10px 15px;
     border-radius: 5px;
-    padding: 10px 10px 20px;
-    line-height: 1.5;
+    padding: 5px 5px 15px;
+    line-height: 1.3;
 
 
-    font-size: clamp(0.9rem, 1.25vw, 1.1rem);
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
     color: black;
 }
 
@@ -91,8 +91,8 @@ h1{
 
     .content p{
         font-size: clamp(0.85rem, 3.5vw, 1rem);
-        margin: 15px;
-        padding: 8px 8px 15px;
+        margin: 5px 15px 12px;
+        padding: 2px 8px 15px;
     }
 }
 
