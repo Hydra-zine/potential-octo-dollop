@@ -1,152 +1,49 @@
-/* 
 body{
     background-color: white;
 }
 
 h1{
-    margin-top: 5vw;
+    margin-top: 5%;
     text-align: center;
-    font-size: 5dvw;
-    color:  rgb(40, 40, 50);
+    font-size: clamp(2rem, 5vw, 4rem);
+    color: rgb(40, 40, 50);
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     text-transform: uppercase;
 }
 
 .parent-div{ 
     width: 80%;
-    padding: 0;
     margin: auto;
-
-    font-size: 2dvw;
+    font-size: clamp(1rem, 2vw, 1.25rem);
     color: rgb(40, 40, 50);
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-
-
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .child-div{
     width: 80%;
     background-color: whitesmoke;
     border-radius: 5px;
-    /* opacity: 0.5; 
-    padding: none;
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: 1vw;
-    margin-top: 1vw;
+    margin: 10px auto;
 }
 
 .collapsible{
     width: 100%;
     background-color: whitesmoke;
     border-radius: 5px;
-
-    outline: none;
     border: none;
-    /* opacity: 0.5;
+    outline: none;
     padding: 2%;
 
     cursor: pointer;
 
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    text-align: left;
-    font-size: 1.8dvw;
-    color:black;
-}
 
-.active, .collapsible:hover{
-    background-color:gainsboro;
-}
-
-.content{
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s ease;
-}
-
-.content hr{
-
-
-    margin-top: 0;
-    margin-bottom: 1vw;
-
-}
-
-.content p{
-
-    background-color: whitesmoke;
-    margin: 1vw;
-    border-radius: 5px;
-    /* opacity: 0.5;
-    padding: 1vw;
-    /* padding-bottom: 20px;
-
-    font-size: 1.2dvw;
-    color:black;
-
-}
-
-
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-body {
-    background-color: white;
-}
-
-h1 {
-    margin-top: 5%;
-    text-align: center;
-    font-size: clamp(2rem, 5vw, 4rem);
-    color: rgb(40, 40, 50);
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-                 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    text-transform: uppercase;
-}
-
-.parent-div { 
-    width: 80%;
-    margin: auto;
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    color: rgb(40, 40, 50);
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-                 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
-
-.child-div {
-    width: 80%;
-    background-color: whitesmoke;
-    border-radius: 5px;
-    margin: 10px auto;
-}
-
-.collapsible {
-    width: 100%;
-    background-color: whitesmoke;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    padding: 2%;
-    cursor: pointer;
     font-family: inherit;
     text-align: left;
     font-size: clamp(1rem, 1.5vw, 1.25rem);
     color: black;
 }
 
-.active,
-.collapsible:hover {
+.active, .collapsible:hover{
     background-color: gainsboro;
 }
 
@@ -156,42 +53,43 @@ h1 {
     transition: max-height 0.5s ease;
 }
 
-.content hr {
+.content hr{
     margin-top: 0;
     margin-bottom: 1%;
 }
 
-.content p {
+.content p{
     background-color: whitesmoke;
     margin: 20px;
     border-radius: 5px;
     padding: 10px 10px 20px;
-    font-size: clamp(0.9rem, 1.25vw, 1.1rem);
     line-height: 1.5;
+
+
+    font-size: clamp(0.9rem, 1.25vw, 1.1rem);
     color: black;
 }
 
-/* 📱 Responsive tweaks for small screens */
 @media (max-width: 700px) {
-    .parent-div {
+    .parent-div{
         width: 95%;
     }
 
-    .child-div {
+    .child-div{
         width: 100%;
     }
 
-    h1 {
+    h1{
         font-size: clamp(1.5rem, 8vw, 3rem);
         margin-top: 10%;
     }
 
-    .collapsible {
+    .collapsible{
         font-size: clamp(0.9rem, 4vw, 1.1rem);
         padding: 4%;
     }
 
-    .content p {
+    .content p{
         font-size: clamp(0.85rem, 3.5vw, 1rem);
         margin: 15px;
         padding: 8px 8px 15px;
