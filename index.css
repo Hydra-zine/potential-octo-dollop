@@ -12,7 +12,7 @@ h1{
 }
 
 .parent-div{ 
-    width: 80%;
+    width: 90%;
     margin: auto;
     font-size: clamp(1rem, 2vw, 1.25rem);
     color: rgb(40, 40, 50);
@@ -20,7 +20,7 @@ h1{
 }
 
 .child-div{
-    width: 80%;
+    width: 90%;
     background-color: whitesmoke;
     border-radius: 5px;
     margin: 10px auto;
@@ -68,6 +68,30 @@ h1{
 
     font-size: clamp(0.9rem, 1.5vw, 1.1rem);
     color: black;
+}
+
+
+
+
+.table-parent table{
+    width: 80%;
+    margin: 20dvw auto 10px;
+    border-collapse: collapse;
+    /*border: 1px solid black;*/
+    font-size: clamp(0.9rem, 0.5vw, 1.1rem);
+    
+}
+
+.table-parent td, th{
+    border: 1px solid black;
+    text-align: left;
+    padding: 10px;
+    margin: 30px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.table-parent tr:nth-child(even){
+    background-color:gainsboro;
 }
 
 @media (max-width: 700px) {
