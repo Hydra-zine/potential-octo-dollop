@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -14,6 +16,8 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueText;
 
     [SerializeField] private GameObject DialogueUI;
+
+    [SerializeField] private GameObject TextCursor;
 
     [SerializeField] private float letterSpeed = 0.05f;
 
@@ -38,7 +42,6 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(Dialogue dialogue)
     {
-
         InteractionManager.StartInteraction();
 
         dialogueIsActive = true;
@@ -46,6 +49,7 @@ public class DialogueManager : MonoBehaviour
         sentances.Clear();
 
         DialogueUI.SetActive(true);
+        TextCursor.SetActive(false);
 
         nameText.text = dialogue.name;
 
@@ -60,21 +64,25 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayNextSentance()
     {
+        
+
+        if (dialogueText.text != currentSentance && !string.IsNullOrEmpty(currentSentance))
+        {
+            StopAllCoroutines();
+            TextCursor.SetActive(true);
+            dialogueText.text = currentSentance;
+            return;
+        }
+
         if (sentances.Count == 0)
         {
             EndDialogue();
             return;
         }
 
-        StopAllCoroutines();
-
-        if (dialogueText.text != currentSentance)
-        {
-            dialogueText.text = currentSentance;
-            return;
-        }
-
         currentSentance = sentances.Dequeue();
+        StopAllCoroutines();
+        TextCursor.SetActive(false);
         StartCoroutine(TypeSentance(currentSentance));
     }
 
@@ -86,6 +94,7 @@ public class DialogueManager : MonoBehaviour
             dialogueText.text += letter;
             yield return new WaitForSeconds(letterSpeed);
         }
+        TextCursor.SetActive(true);
     }
 
     public void EndDialogue()
