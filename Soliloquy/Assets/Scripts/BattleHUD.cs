@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BattleHUD : MonoBehaviour
@@ -12,23 +13,25 @@ public class BattleHUD : MonoBehaviour
     //public HPBar hpBar;
 
     [SerializeField] private GameObject targetButtonPrefab;
+    [SerializeField] private GameObject magicButtonPrefab;
     [SerializeField] private GameObject enemyTargetPanel;
     [SerializeField] private GameObject playerTargetPanel;
 
     private List<TargetButton> activeEnemyButtons = new List<TargetButton>();
+    private List<MagicButton> activeMagicButtons = new List<MagicButton>();
     private List<TargetButton> activePlayerButtons = new List<TargetButton>();
 
-    public static BattleHUD Instance { get; private set; }
+    // public static BattleHUD Instance { get; private set; }
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-    }
+    // private void Awake()
+    // {
+    //     if (Instance != null && Instance != this)
+    //     {
+    //         Destroy(gameObject);
+    //         return;
+    //     }
+    //     Instance = this;
+    // }
 
 
     // Clear old buttons
@@ -53,17 +56,47 @@ public class BattleHUD : MonoBehaviour
 
             buttonList.Add(tb);
         }
-
-
     }
     private void ClearTargetButtons(List<TargetButton> buttonList)
     {
         enemyTargetPanel.SetActive(false);
-        foreach (TargetButton tb in buttonList)
+        foreach(TargetButton tb in buttonList)
         {
             Destroy(tb.gameObject);
         }
         buttonList.Clear();
+    }
+
+    private void ShowMagicButtons()
+    {
+        ClearMagicButtons();
+
+        foreach (ActionAsset atk in currentUnit.attacks)
+        {
+            GameObject buttonGO = Instantiate(magicButtonPrefab, magicPanel.transform);
+            MagicButton mb = buttonGO.GetComponent<MagicButton>();
+
+            mb.Initialize(currentUnit, atk, chosenAttack =>
+            {
+                ClearMagicButtons();
+                ShowTargetButtons(bs.enemyUnits, enemyTargetPanel, activeEnemyButtons, target =>
+                {
+                    StartCoroutine(chosenAttack.Execute(currentUnit, target));
+                });
+            });
+
+        }
+
+    }
+
+    private void ClearMagicButtons()
+    {
+        magicPanel.SetActive(false);
+        foreach (MagicButton mb in activeMagicButtons)
+        {
+            Destroy(mb.gameObject);
+        }
+        activeMagicButtons.Clear();
     }
 
 
@@ -76,7 +109,13 @@ public class BattleHUD : MonoBehaviour
     public void OnAttackButton()
     {
         ActionPanel.SetActive(false);
+        magicPanel.SetActive(false);
         ShowTargetButtons(bs.enemyUnits, enemyTargetPanel, activeEnemyButtons, currentUnit.PerformAttack);
+    }
+
+    public void OnMagicButton()
+    {
+        magicPanel.SetActive(true);
     }
 
     public void RemoveUnit(Unit deadUnit)
@@ -99,5 +138,4 @@ public class BattleHUD : MonoBehaviour
             }
         }
     }
-
 }
