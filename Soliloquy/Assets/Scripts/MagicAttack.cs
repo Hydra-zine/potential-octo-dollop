@@ -1,8 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Battle/Magic/Fireball")]
-public class Fireball : ActionAsset
+[CreateAssetMenu(menuName = "Battle/Magic/MagicAttack")]
+public class MagicAttack : ActionAsset
 {
     public int power = 20;
 

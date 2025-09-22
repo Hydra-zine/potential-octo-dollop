@@ -10,7 +10,6 @@ public class MagicButton : MonoBehaviour
     private Action<ActionAsset> callback;
 
     [SerializeField] private TextMeshProUGUI label;
-    [SerializeField] private Button button;
 
     public void Initialize(Unit caster, ActionAsset action, Action<ActionAsset> onChosen)
     {
@@ -19,6 +18,11 @@ public class MagicButton : MonoBehaviour
         callback = onChosen;
 
         label.text = $"{actionAsset.actionName} ({actionAsset.MPCost} MP)";
-        button.onClick.AddListener(() => callback?.Invoke(actionAsset));
+        
+    }
+
+    public void OnClick()
+    {
+        callback?.Invoke(actionAsset);
     }
 }

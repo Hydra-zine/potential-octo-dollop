@@ -20,7 +20,6 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] GameObject[] enemyPrefabs;
     [SerializeField] Transform[] enemyPositions;
 
-    [SerializeField] BattleHUD bh;
 
     private List<Unit> units = new List<Unit>();
     [HideInInspector] public List<Unit> playerUnits = new List<Unit>();
@@ -63,7 +62,7 @@ public class BattleSystem : MonoBehaviour
         playerUnits.Remove(deadUnit);
         enemyUnits.Remove(deadUnit);
 
-        bh.RemoveUnit(deadUnit);
+        BattleHUD.Instance.RemoveUnit(deadUnit);
 
         Destroy(deadUnit.gameObject);
 

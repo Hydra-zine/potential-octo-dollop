@@ -13,8 +13,6 @@ public abstract class Unit : MonoBehaviour
     public bool IsAlive => HP > 0;
 
 
-    public virtual bool IsControllable { get; set; } = false;
-
     public virtual void PerformAttack(Unit target)
     {
         int damage = Mathf.RoundToInt((float)ATK / target.DEF * 10f);

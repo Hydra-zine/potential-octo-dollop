@@ -21,20 +21,18 @@ public class BattleHUD : MonoBehaviour
     private List<MagicButton> activeMagicButtons = new List<MagicButton>();
     private List<TargetButton> activePlayerButtons = new List<TargetButton>();
 
-    // public static BattleHUD Instance { get; private set; }
+    public static BattleHUD Instance { get; private set; }
 
-    // private void Awake()
-    // {
-    //     if (Instance != null && Instance != this)
-    //     {
-    //         Destroy(gameObject);
-    //         return;
-    //     }
-    //     Instance = this;
-    // }
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
 
-
-    // Clear old buttons
 
     private void ShowTargetButtons(List<Unit> targets, GameObject panel, List<TargetButton> buttonList, Action<Unit> OnChosen)
     {
@@ -69,7 +67,6 @@ public class BattleHUD : MonoBehaviour
 
     private void ShowMagicButtons()
     {
-        ClearMagicButtons();
 
         foreach (ActionAsset atk in currentUnit.attacks)
         {
@@ -110,12 +107,17 @@ public class BattleHUD : MonoBehaviour
     {
         ActionPanel.SetActive(false);
         magicPanel.SetActive(false);
+        //Debug.Log($"bs: {bs}, enemyTargetPanel: {enemyTargetPanel}, currentUnit: {currentUnit.name}");
+
         ShowTargetButtons(bs.enemyUnits, enemyTargetPanel, activeEnemyButtons, currentUnit.PerformAttack);
     }
 
     public void OnMagicButton()
     {
+        ClearMagicButtons();
+
         magicPanel.SetActive(true);
+        ShowMagicButtons();
     }
 
     public void RemoveUnit(Unit deadUnit)
