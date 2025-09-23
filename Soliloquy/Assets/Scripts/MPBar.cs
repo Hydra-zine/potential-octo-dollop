@@ -5,28 +5,34 @@ public class MPBar : MonoBehaviour
 {
     [SerializeField] private Slider slider;
     [SerializeField] private TextMeshProUGUI MPText;
-    private int maxMP = 50;
-    private int currentMP;
-    void Start()
+    [SerializeField] SharedMP sharedMP;
+
+    void OnEnable()
     {
-        slider.value = 50;
-        currentMP = maxMP;
+        sharedMP.OnMPChanged += setMP;
+        setMP(sharedMP.currentMP, sharedMP.maxMP);
     }
 
-    public void setMP(int mp)
+    void OnDisable()
     {
-        slider.value = mp;
-        currentMP = mp;
+        sharedMP.OnMPChanged -= setMP;
+    }
+
+    public void setMP(int current, int max)
+    {
+        //slider.transform.localScale = new Vector2(max * 4, slider.transform.localScale.y);
+        slider.maxValue = max;
+        slider.value = current;
     }
 
 
-    public bool useMP(int spellMP)
-    {
-        if (spellMP > currentMP) return false;
+    // public bool useMP(int spellMP)
+    // {
+    //     if (spellMP > currentMP) return false;
 
-        currentMP -= spellMP;
-        MPText.text = "MP: " + currentMP;
-        return true;
-    }
+    //     currentMP -= spellMP;
+    //     MPText.text = "MP: " + currentMP;
+    //     return true;
+    // }
 
 }

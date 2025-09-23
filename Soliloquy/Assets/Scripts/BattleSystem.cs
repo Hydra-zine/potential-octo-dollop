@@ -51,6 +51,7 @@ public class BattleSystem : MonoBehaviour
 
         TurnManager.Instance.InitializeBattle(units);
         TurnManager.Instance.nextTurn();
+        BattleHUD.Instance.CreateHealthBars(playerUnits, enemyUnits);
 
     }
 

@@ -10,12 +10,15 @@ public class BattleHUD : MonoBehaviour
     [SerializeField] BattleSystem bs;
 
     private Unit currentUnit;
-    //public HPBar hpBar;
 
     [SerializeField] private GameObject targetButtonPrefab;
     [SerializeField] private GameObject magicButtonPrefab;
+    [SerializeField] private GameObject healthBarPrefab;
+    [SerializeField] private GameObject enemyBarPrefab;
     [SerializeField] private GameObject enemyTargetPanel;
     [SerializeField] private GameObject playerTargetPanel;
+    [SerializeField] private GameObject playerHealthPanel;
+    [SerializeField] private GameObject enemyHealthPanel;
 
     private List<TargetButton> activeEnemyButtons = new List<TargetButton>();
     private List<MagicButton> activeMagicButtons = new List<MagicButton>();
@@ -72,6 +75,7 @@ public class BattleHUD : MonoBehaviour
         {
             GameObject buttonGO = Instantiate(magicButtonPrefab, magicPanel.transform);
             MagicButton mb = buttonGO.GetComponent<MagicButton>();
+            activeMagicButtons.Add(mb);
 
             mb.Initialize(currentUnit, atk, chosenAttack =>
             {
@@ -85,7 +89,6 @@ public class BattleHUD : MonoBehaviour
         }
 
     }
-
     private void ClearMagicButtons()
     {
         magicPanel.SetActive(false);
@@ -94,6 +97,24 @@ public class BattleHUD : MonoBehaviour
             Destroy(mb.gameObject);
         }
         activeMagicButtons.Clear();
+    }
+
+    public void CreateHealthBars(List<Unit> players, List<Unit> enemies)
+    {
+        foreach (Unit unit in players)
+        {
+            GameObject hbGO = Instantiate(healthBarPrefab, playerHealthPanel.transform);
+            HPBar hb = hbGO.GetComponent<HPBar>();
+            unit.SetHPBar(hb);
+            hb.UpdateHP(unit.HP, unit.MAXHP);
+        }
+        foreach (Unit unit in enemies)
+        {
+            GameObject hbGO = Instantiate(enemyBarPrefab, enemyHealthPanel.transform);
+            HPBar hb = hbGO.GetComponent<HPBar>();
+            unit.SetHPBar(hb);
+            hb.UpdateHP(unit.HP, unit.MAXHP);
+        }
     }
 
 

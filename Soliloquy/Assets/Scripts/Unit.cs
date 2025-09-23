@@ -6,7 +6,9 @@ public abstract class Unit : MonoBehaviour
 {
 
     public string UnitName;
-    public int HP, SPD, ATK, DEF, MGA, MGD, LCK;
+    public int MAXHP, HP, SPD, ATK, DEF, MGA, MGD, LCK;
+
+    private HPBar hpbar;
     public event System.Action<Unit> OnDeath;
     public List<ActionAsset> attacks;
 
@@ -35,6 +37,13 @@ public abstract class Unit : MonoBehaviour
             Debug.Log($"no way {UnitName} just died lmao");
             OnDeath?.Invoke(this);
         }
+        hpbar.UpdateHP(HP, MAXHP);
+    }
+
+    public void SetHPBar(HPBar hb)
+    {
+        hpbar = hb;
+        hpbar.UpdateHP(HP, MAXHP);
     }
 
     public virtual IEnumerator FinishTurn()
