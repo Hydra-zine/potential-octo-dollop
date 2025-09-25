@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class BattleHUD : MonoBehaviour
@@ -18,6 +19,9 @@ public class BattleHUD : MonoBehaviour
     [SerializeField] private GameObject playerTargetPanel;
     [SerializeField] private GameObject playerHealthPanel;
     [SerializeField] private GameObject enemyHealthPanel;
+
+    [SerializeField] private GameObject namePanel;
+    [SerializeField] private TextMeshProUGUI CurrentName;
 
     private List<TargetButton> activeEnemyButtons = new List<TargetButton>();
     private List<MagicButton> activeMagicButtons = new List<MagicButton>();
@@ -70,7 +74,18 @@ public class BattleHUD : MonoBehaviour
     private void ShowMagicButtons()
     {
 
-        foreach (ActionAsset atk in currentUnit.attacks)
+        List<ActionAsset> availableAttacks;
+
+        if (currentUnit is Mage mage)
+        {
+            availableAttacks = mage.GetShuffledSpells();
+        }
+        else
+        {
+            availableAttacks = currentUnit.attacks;
+        }
+
+        foreach (ActionAsset atk in availableAttacks)
         {
             GameObject buttonGO = Instantiate(magicButtonPrefab, magicPanel.transform);
             MagicButton mb = buttonGO.GetComponent<MagicButton>();
@@ -120,13 +135,16 @@ public class BattleHUD : MonoBehaviour
     public void ShowActions(Unit unit)
     {
         currentUnit = unit;
+        namePanel.SetActive(true);
+        CurrentName.text = currentUnit.UnitName;
         ActionPanel.SetActive(true);
         magicPanel.SetActive(false);
     }
     public void OnAttackButton()
     {
-        ActionPanel.SetActive(false);
+        //ActionPanel.SetActive(false);
         magicPanel.SetActive(false);
+        //namePanel.SetActive(false);
         //Debug.Log($"bs: {bs}, enemyTargetPanel: {enemyTargetPanel}, currentUnit: {currentUnit.name}");
 
         ShowTargetButtons(bs.enemyUnits, enemyTargetPanel, activeEnemyButtons, currentUnit.PerformAttack);
@@ -135,7 +153,6 @@ public class BattleHUD : MonoBehaviour
     public void OnMagicButton()
     {
         ClearMagicButtons();
-
         magicPanel.SetActive(true);
         ShowMagicButtons();
     }

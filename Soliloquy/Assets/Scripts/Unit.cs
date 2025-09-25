@@ -26,7 +26,7 @@ public abstract class Unit : MonoBehaviour
     {
         int damage = Mathf.RoundToInt((float)MGA / target.MGD * 10f);
         target.TakeDamage(damage);
-        Debug.Log($"bro just used {attack.name} on {target.name} for {damage} ouchie points no way");
+        Debug.Log($"bro just used {attack.actionName} on {target.UnitName} for {damage} ouchie points no way");
     }
     public virtual void TakeDamage(int damage)
     {

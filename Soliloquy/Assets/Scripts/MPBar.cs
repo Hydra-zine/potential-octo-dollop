@@ -23,6 +23,7 @@ public class MPBar : MonoBehaviour
         //slider.transform.localScale = new Vector2(max * 4, slider.transform.localScale.y);
         slider.maxValue = max;
         slider.value = current;
+        MPText.text = $"MP: {current}/{max}";
     }
 
 

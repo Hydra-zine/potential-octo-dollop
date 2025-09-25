@@ -41,7 +41,7 @@ public class TurnManager : MonoBehaviour
             return;
         }
 
-        Debug.Log($"its {current.name}'s turn");
+        Debug.Log($"its {current.UnitName}'s turn");
         current.TakeTurn();
 
     }
