@@ -17,10 +17,10 @@ public class MagicAttack : ActionAsset
 
         sharedMP.Spend(MPCost);
         int damage = Mathf.RoundToInt((float)user.MGA / target.MGD * power);
-        target.TakeDamage(damage);
 
         Debug.Log($"{user.UnitName} cast {actionName} on {target.UnitName} for {damage} damage!");
-
-        //yield return user.FinishTurn();
+        
+        target.TakeDamage(damage);
+        yield return user.FinishTurn();
     }
 }

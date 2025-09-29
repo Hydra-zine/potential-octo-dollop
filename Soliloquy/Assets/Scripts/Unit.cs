@@ -2,11 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum UnitRole
+{
+    Mage,
+    Swordsman,
+    Healer,
+    Berserker,
+    Mechanic,
+    BeastTamer,
+    Mystic,
+    Enemy
+}
+
 public abstract class Unit : MonoBehaviour
 {
 
     public string UnitName;
     public int MAXHP, HP, SPD, ATK, DEF, MGA, MGD, LCK;
+
+    public UnitRole role;
 
     private HPBar hpbar;
     public event System.Action<Unit> OnDeath;
@@ -20,8 +34,9 @@ public abstract class Unit : MonoBehaviour
         int damage = Mathf.RoundToInt((float)ATK / target.DEF * 10f);
         target.TakeDamage(damage);
         Debug.Log($"bro just hit {target.UnitName} for {damage} ouchie points no way");
-
+        StartCoroutine(FinishTurn());
     }
+    
     public virtual void PerformMagicAttack(ActionAsset attack, Unit target)
     {
         int damage = Mathf.RoundToInt((float)MGA / target.MGD * 10f);

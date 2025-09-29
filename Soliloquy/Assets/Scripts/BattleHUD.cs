@@ -7,7 +7,6 @@ public class BattleHUD : MonoBehaviour
 {
     [SerializeField] GameObject ActionPanel;
     [SerializeField] GameObject magicPanel;
-    [SerializeField] BattleSystem bs;
 
     private Unit currentUnit;
 
@@ -22,6 +21,8 @@ public class BattleHUD : MonoBehaviour
 
     [SerializeField] private GameObject namePanel;
     [SerializeField] private TextMeshProUGUI CurrentName;
+
+    [SerializeField] private RegenAction regenAction;
 
     private List<TargetButton> activeEnemyButtons = new List<TargetButton>();
     private List<MagicButton> activeMagicButtons = new List<MagicButton>();
@@ -55,7 +56,7 @@ public class BattleHUD : MonoBehaviour
             {
                 OnChosen(chosenUnit);
                 ClearTargetButtons(buttonList);
-                StartCoroutine(currentUnit.FinishTurn());
+                // StartCoroutine(currentUnit.FinishTurn());
             });
 
             buttonList.Add(tb);
@@ -94,7 +95,7 @@ public class BattleHUD : MonoBehaviour
             mb.Initialize(currentUnit, atk, chosenAttack =>
             {
                 ClearMagicButtons();
-                ShowTargetButtons(bs.enemyUnits, enemyTargetPanel, activeEnemyButtons, target =>
+                ShowTargetButtons(BattleSystem.Instance.enemyUnits, enemyTargetPanel, activeEnemyButtons, target =>
                 {
                     StartCoroutine(chosenAttack.Execute(currentUnit, target));
                 });
@@ -142,12 +143,17 @@ public class BattleHUD : MonoBehaviour
     }
     public void OnAttackButton()
     {
-        //ActionPanel.SetActive(false);
-        magicPanel.SetActive(false);
-        //namePanel.SetActive(false);
+        clearPanels();
         //Debug.Log($"bs: {bs}, enemyTargetPanel: {enemyTargetPanel}, currentUnit: {currentUnit.name}");
 
-        ShowTargetButtons(bs.enemyUnits, enemyTargetPanel, activeEnemyButtons, currentUnit.PerformAttack);
+        ShowTargetButtons(BattleSystem.Instance.enemyUnits, enemyTargetPanel, activeEnemyButtons, target =>
+        {
+            // Perform attack
+            currentUnit.PerformAttack(target);
+
+            // Only NOW finish the turn
+            // StartCoroutine(currentUnit.FinishTurn());
+        });
     }
 
     public void OnMagicButton()
@@ -155,6 +161,20 @@ public class BattleHUD : MonoBehaviour
         ClearMagicButtons();
         magicPanel.SetActive(true);
         ShowMagicButtons();
+    }
+
+    public void OnRegenButton()
+    {
+        clearPanels();
+
+        StartCoroutine(regenAction.Execute(currentUnit, null));
+    }
+
+    private void clearPanels()
+    {
+        ActionPanel.SetActive(false);
+        magicPanel.SetActive(false);
+        namePanel.SetActive(false);
     }
 
     public void RemoveUnit(Unit deadUnit)

@@ -1,19 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public enum BattleState
-{
-    START,
-    PLAYERTURN,
-    ENEMYTURN,
-    WON,
-    LOST
-}
-
 public class BattleSystem : MonoBehaviour
 {
-    public BattleState state;
 
     [SerializeField] GameObject[] PlayerPrefabs;
     [SerializeField] Transform[] PlayerPositions;
@@ -25,10 +14,23 @@ public class BattleSystem : MonoBehaviour
     [HideInInspector] public List<Unit> playerUnits = new List<Unit>();
     [HideInInspector] public List<Unit> enemyUnits = new List<Unit>();
 
+    public static BattleSystem Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
 
     void Start()
     {
-        state = BattleState.START;
 
         for (int i = 0; i < PlayerPrefabs.Length; i++)
         {
